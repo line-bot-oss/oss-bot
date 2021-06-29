@@ -1,0 +1,3 @@
+[submodule "cherline"]
+	path = cherline
+	url = git@github.com:sakuto12/cherline.git
