@@ -9,9 +9,12 @@ from settings import AppType, Environment, Setting
 import asyncio, traceback
 
 
-async def execute(client: Cherline, op: Operation) -> Coroutine:
+async def execute(
+    client: Cherline, op: Operation, setting: Setting
+) -> Coroutine:
+    print(op)
     if op.type == OpType.RECEIVE_MESSAGE:
-        return await client.sendMessage(op.message._from, op.message.text)
+        return await client.sendMessage(setting.ADMIN_MIDS[0], op.message.text)
 
 
 def login(setting: Setting) -> LINE:
@@ -52,7 +55,7 @@ def login(setting: Setting) -> LINE:
     return client
 
 
-def login_with_cherline(client: LINE, setting: Setting) -> Cherline:
+def login_with_cherline(setting: Setting) -> Cherline:
     """cherlineでログインする
 
     Args:
@@ -63,21 +66,22 @@ def login_with_cherline(client: LINE, setting: Setting) -> Cherline:
         Cherline: Cherlnie Client
     """
     cherline_client = Cherline(CherlineAppType[setting.app_type.name])
-    cherline_client.login(client.authToken)
+    cherline_client.login(setting.TOKEN)
     return cherline_client
 
 
-async def run(client: Cherline) -> None:
+async def run(client: Cherline, setting: Setting) -> None:
+    client.revision = -1
     while True:
         try:
             try:
                 ops = await client.fetchOps()
-            except AttributeError:
+            except AttributeError as e:
+                traceback.print_exc()
                 continue
             revisions = []
             op_interrput: list = []
             for op in ops:
-                print(op)
                 if op.type == OpType.END_OF_OPERATION:
                     if op.param1:
                         a, _, _ = op.param1.partition("")
@@ -88,7 +92,7 @@ async def run(client: Cherline) -> None:
                 else:
                     revisions.append(op.revision)
 
-                op_interrput.append(execute(client, op))
+                op_interrput.append(execute(client, op, setting))
 
             if revisions:
                 client.setRevisions(revisions)
@@ -116,7 +120,7 @@ if __name__ == "__main__":
 
     setting = Setting(Environment(options.env), AppType.WINDOWS)
     client = login(setting)
-    cherline_client = login_with_cherline(client, setting)
+    cherline_client = login_with_cherline(setting)
 
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(run(cherline_client))
+    loop.run_until_complete(run(cherline_client, setting))
