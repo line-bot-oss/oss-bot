@@ -7,13 +7,13 @@ from dotenv import load_dotenv
 
 
 class AppType(Enum):
-    MAC = "DESKTOPMAC"
-    WINDOWS = "DESKTOPWIN"
-    IPAD = "IOSIPAD"
-    CHROME = "CHROMEOS"
     ANDROID = "ANDROID"
-    IOS = "IOS"
     LINE_LITE = "ANDROIDLITE"
+    IOS = "IOS"
+    IPAD = "IOSIPAD"
+    WINDOWS = "DESKTOPWIN"
+    MAC = "DESKTOPMAC"
+    CHROME = "CHROMEOS"
 
 
 class DisplayName(Enum):
