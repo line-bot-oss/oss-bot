@@ -4,6 +4,20 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+frugal = "*"
+astor = "*"
+thrift = "*"
+requests = "*"
+rsa = "*"
+hyper = "*"
+httpx = "*"
+httplib2 = "*"
+python-axolotl-curve25519 = "*"
+pycryptodome = "*"
+python-dotenv = "*"
+aiohttp = "*"
+asyncio-nats-client = "*"
+aiostomp = "*"
 
 [dev-packages]
 black = "*"
