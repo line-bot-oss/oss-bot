@@ -1,3 +1,9 @@
 [submodule "cherline"]
 	path = cherline
 	url = git@github.com:sakuto12/cherline.git
+[submodule "line_env"]
+	path = line_env
+	url = git@github.com:nanato12/line-env.git
+[submodule "line"]
+	path = line
+	url = git@github.com:nanato12/line-lib.git
