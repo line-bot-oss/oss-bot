@@ -46,7 +46,7 @@ class Setting:
     ) -> None:
         self.env = env
         if app_type is None:
-            app_type = AppType.IPAD
+            app_type = AppType.WINDOWS
         self.app_type = app_type
 
         load_dotenv(verbose=True)
